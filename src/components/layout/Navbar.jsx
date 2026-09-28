@@ -115,53 +115,67 @@ export default function Navbar({ onNavigate, onOpenCustomBuilder }) {
         </div>
       </div>
 
-      {/* Mobile Menu Drawer */}
+      {/* Mobile Menu Drawer & Backdrop Overlay */}
       {mobileMenuOpen && (
-        <div className="lg:hidden fixed inset-x-0 top-full bg-[#FAF7F2]/98 border-b border-cream-200 shadow-luxury-xl backdrop-blur-lg animate-fadeIn p-6 max-h-[85vh] overflow-y-auto">
-          <nav className="flex flex-col gap-2">
-            {navLinks.map((link, index) => (
-              <a
-                key={index}
-                href={link.href}
-                onClick={(e) => handleLinkClick(e, link)}
-                className={`flex items-center justify-between p-3.5 rounded-2xl text-xs font-semibold uppercase tracking-wider transition-all ${
-                  link.highlight
-                    ? 'bg-gold-100 text-gold-700 border border-gold-300'
-                    : 'text-espresso-600 hover:bg-cream-100'
-                }`}
-              >
-                <div className="flex items-center gap-2">
-                  {link.highlight && <Sparkles className="w-3.5 h-3.5 text-gold-600" />}
-                  <span>{link.name}</span>
-                </div>
-                <ChevronDown className="w-4 h-4 -rotate-90 text-espresso-300" />
-              </a>
-            ))}
+        <>
+          {/* Dimmed Backdrop Overlay (Click outside to close) */}
+          <div 
+            onClick={() => setMobileMenuOpen(false)}
+            className="lg:hidden fixed inset-0 top-[73px] bg-espresso-900/50 backdrop-blur-xs z-30 animate-fadeIn"
+            aria-hidden="true"
+          />
 
-            <div className="mt-5 pt-5 border-t border-cream-200 flex flex-col gap-3">
-              <button
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  onOpenCustomBuilder();
-                }}
-                className="w-full flex items-center justify-center gap-2 py-3.5 rounded-full bg-gold-500 text-white font-bold text-xs uppercase tracking-luxury shadow-luxury-md"
-              >
-                <Sparkles className="w-4 h-4" />
-                <span>Bespoke Cake Studio</span>
-              </button>
+          {/* Solid Drawer Content */}
+          <div className="lg:hidden fixed inset-x-0 top-[73px] bg-[#FAF7F2] border-b border-cream-300 shadow-luxury-xl z-40 animate-fadeIn p-5 max-h-[80vh] overflow-y-auto">
+            <nav className="flex flex-col gap-2.5">
+              {navLinks.map((link, index) => (
+                <a
+                  key={index}
+                  href={link.href}
+                  onClick={(e) => handleLinkClick(e, link)}
+                  className={`flex items-center justify-between p-3.5 rounded-2xl text-xs font-semibold uppercase tracking-wider transition-all duration-200 ${
+                    link.highlight
+                      ? 'bg-gold-100/90 text-gold-700 border border-gold-300/90 shadow-xs'
+                      : 'bg-white text-espresso-700 border border-cream-200/90 shadow-2xs hover:border-gold-300 hover:bg-gold-50/40 active:scale-[0.99]'
+                  }`}
+                >
+                  <div className="flex items-center gap-2.5">
+                    {link.highlight ? (
+                      <Sparkles className="w-4 h-4 text-gold-600" />
+                    ) : (
+                      <span className="w-1.5 h-1.5 rounded-full bg-gold-400"></span>
+                    )}
+                    <span>{link.name}</span>
+                  </div>
+                  <ChevronDown className="w-4 h-4 -rotate-90 text-espresso-300" />
+                </a>
+              ))}
 
-              <a
-                href={`https://wa.me/${BAKERY_INFO.whatsapp}?text=Hello%20Fun%20Cakes!`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full flex items-center justify-center gap-2 py-3 rounded-full bg-white text-espresso-700 font-semibold text-xs border border-cream-200"
-              >
-                <MessageCircle className="w-4 h-4 text-sage-400" />
-                <span>WhatsApp: {BAKERY_INFO.phone}</span>
-              </a>
-            </div>
-          </nav>
-        </div>
+              <div className="mt-4 pt-4 border-t border-cream-200 flex flex-col gap-3">
+                <button
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    onOpenCustomBuilder();
+                  }}
+                  className="w-full flex items-center justify-center gap-2 py-3.5 rounded-full bg-gold-500 hover:bg-gold-600 text-white font-bold text-xs uppercase tracking-luxury shadow-luxury-md active:scale-98 transition-all"
+                >
+                  <Sparkles className="w-4 h-4" />
+                  <span>Bespoke Cake Studio</span>
+                </button>
+
+                <a
+                  href={`https://wa.me/${BAKERY_INFO.whatsapp}?text=Hello%20Fun%20Cakes!`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full flex items-center justify-center gap-2 py-3 rounded-full bg-white hover:bg-cream-50 text-espresso-700 font-semibold text-xs border border-cream-200 shadow-2xs transition-all"
+                >
+                  <MessageCircle className="w-4 h-4 text-sage-400" />
+                  <span>WhatsApp: {BAKERY_INFO.phone}</span>
+                </a>
+              </div>
+            </nav>
+          </div>
+        </>
       )}
     </header>
   );
